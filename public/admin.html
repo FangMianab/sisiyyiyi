@@ -83,26 +83,15 @@
                 </form>
             </div>
 
-            <!-- Links & Buttons Manager Card -->
+            <!-- Links & Buttons Manager Card (Mobile Card List) -->
             <div class="dash-card">
                 <div class="card-header-flex">
                     <h2><i class="fa-solid fa-link"></i> 跳转按钮与多媒体管理</h2>
                     <button id="add-btn-trigger" class="btn-primary"><i class="fa-solid fa-plus"></i> 添加新按钮</button>
                 </div>
-                <div class="table-responsive">
-                    <table class="links-table">
-                        <thead>
-                            <tr>
-                                <th>标题</th>
-                                <th>状态 / 权限</th>
-                                <th>目标/链接</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-links-tbody">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
+                <!-- 竖屏适配的卡片列表容器 -->
+                <div id="admin-links-container" class="admin-links-list">
+                    <!-- 动态生成的卡片插入到这里 -->
                 </div>
             </div>
         </div>
