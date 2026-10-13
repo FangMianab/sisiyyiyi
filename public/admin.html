@@ -44,7 +44,7 @@
         <div class="dash-grid">
             <!-- Profile Settings Card -->
             <div class="dash-card">
-                <h2><i class="fa-solid fa-user-pen"></i> 个人资料与外观设置</h2>
+                <h2><i class="fa-solid fa-user-pen"></i> 个人资料与安全设置</h2>
                 <form id="profile-form">
                     <div class="form-group">
                         <label>昵称 (Name)</label>
@@ -61,6 +61,10 @@
                     <div class="form-group">
                         <label>背景图片路径 (Background Image URL)</label>
                         <input type="text" id="cfg-bg" required placeholder="images/bg.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label>私密链接/按钮共享访问密码 (Link Password)</label>
+                        <input type="text" id="cfg-password" required placeholder="访客访问受保护按钮时输入的密码">
                     </div>
                     <div class="form-group">
                         <label>整体色调预设 (Color Palette)</label>
@@ -90,9 +94,8 @@
                         <thead>
                             <tr>
                                 <th>标题</th>
-                                <th>类型</th>
+                                <th>状态 / 权限</th>
                                 <th>目标/链接</th>
-                                <th>色调</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -118,14 +121,14 @@
                 <div class="form-group">
                     <label>按钮类型 (Type)</label>
                     <select id="btn-type-input">
-                        <option value="link">普通网页跳转 (Link - 直达无阻)</option>
-                        <option value="video">视频播放器按钮 (Video Modal - 完美铺满)</option>
+                        <option value="link">普通网页跳转 (Link)</option>
+                        <option value="video">视频播放器按钮 (Video Modal)</option>
                         <option value="image">图片展示按钮 (Image Showcase)</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>目标链接 / 视频源 / 图片路径 (URL)</label>
-                    <input type="text" id="btn-url-input" required placeholder="https://... 或 videos/xxx.mp4 或 images/xxx.png">
+                    <input type="text" id="btn-url-input" required placeholder="https://... 或 videos/xxx.mp4">
                 </div>
                 <div class="form-group">
                     <label>图标 Class (FontAwesome)</label>
@@ -138,6 +141,13 @@
                         <option value="magenta">Neon Magenta (霓虹品红)</option>
                         <option value="gold">Rose Gold (玫瑰金)</option>
                         <option value="purple">Velvet Purple (丝绒紫)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>安全锁定保护 (Password Protection)</label>
+                    <select id="btn-locked-input">
+                        <option value="false">公开访问 (Unlocked)</option>
+                        <option value="true">密码上锁保护 (Locked)</option>
                     </select>
                 </div>
                 <div class="modal-buttons">
