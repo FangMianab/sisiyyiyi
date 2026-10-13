@@ -1,7 +1,6 @@
 let currentConfig = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // Check if logged in
     const token = localStorage.getItem("admin_token");
     if (token) {
         showDashboard();
@@ -9,7 +8,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         showLogin();
     }
 
-    // Login Form Handler
     document.getElementById("login-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const username = document.getElementById("login-user").value;
@@ -34,18 +32,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // Logout Handler
     document.getElementById("logout-btn").addEventListener("click", () => {
         localStorage.removeItem("admin_token");
         showLogin();
     });
 
-    // Profile Save Handler
     document.getElementById("profile-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         currentConfig.profile.name = document.getElementById("cfg-name").value;
         currentConfig.profile.bio = document.getElementById("cfg-bio").value;
         currentConfig.profile.avatar = document.getElementById("cfg-avatar").value;
+        currentConfig.profile.backgroundImage = document.getElementById("cfg-bg").value;
         currentConfig.profile.theme = document.getElementById("cfg-theme").value;
         
         const fontInput = document.getElementById("cfg-font").value;
@@ -54,10 +51,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         await saveConfigToBackend(currentConfig);
-        alert("个人资料保存成功！");
+        alert("个人资料与背景图设置保存成功！");
     });
 
-    // Add Button Modal Trigger
     document.getElementById("add-btn-trigger").addEventListener("click", () => {
         openBtnModal();
     });
@@ -66,7 +62,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("btn-modal").style.display = "none";
     });
 
-    // Save Link/Button Form Handler
     document.getElementById("btn-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const id = document.getElementById("edit-btn-id").value;
@@ -77,7 +72,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const colorTone = document.getElementById("btn-color-input").value;
 
         if (id) {
-            // Edit existing
             const item = currentConfig.links.find(l => l.id === id);
             if (item) {
                 item.title = title;
@@ -87,7 +81,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 item.colorTone = colorTone;
             }
         } else {
-            // Add new
             const newItem = {
                 id: Date.now().toString(),
                 title,
@@ -124,6 +117,7 @@ async function loadConfig() {
         document.getElementById("cfg-name").value = currentConfig.profile.name;
         document.getElementById("cfg-bio").value = currentConfig.profile.bio;
         document.getElementById("cfg-avatar").value = currentConfig.profile.avatar;
+        document.getElementById("cfg-bg").value = currentConfig.profile.backgroundImage || "images/bg.jpg";
         document.getElementById("cfg-theme").value = currentConfig.profile.theme || "velvet-ruby";
         document.getElementById("cfg-font").value = currentConfig.profile.fontFamily || "";
 
