@@ -55,8 +55,12 @@
                         <textarea id="cfg-bio" rows="3" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label>头像链接 / 图片路径 (Avatar URL)</label>
+                        <label>头像图片路径 (Avatar URL)</label>
                         <input type="text" id="cfg-avatar" required>
+                    </div>
+                    <div class="form-group">
+                        <label>背景图片路径 (Background Image URL)</label>
+                        <input type="text" id="cfg-bg" required placeholder="images/bg.jpg">
                     </div>
                     <div class="form-group">
                         <label>整体色调预设 (Color Palette)</label>
@@ -68,16 +72,15 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>自定义字体上传 / 输入字体名称</label>
+                        <label>自定义字体名称</label>
                         <input type="text" id="cfg-font" placeholder="例如: CustomFont 或留空默认">
-                        <input type="file" id="font-file-input" accept=".woff2,.ttf,.otf" style="margin-top: 8px;">
                     </div>
                     <button type="submit" class="btn-primary">保存基本设置</button>
                 </form>
             </div>
 
             <!-- Links & Buttons Manager Card -->
-            <div class="dash-card span-2">
+            <div class="dash-card">
                 <div class="card-header-flex">
                     <h2><i class="fa-solid fa-link"></i> 跳转按钮与多媒体管理</h2>
                     <button id="add-btn-trigger" class="btn-primary"><i class="fa-solid fa-plus"></i> 添加新按钮</button>
@@ -116,7 +119,7 @@
                     <label>按钮类型 (Type)</label>
                     <select id="btn-type-input">
                         <option value="link">普通网页跳转 (Link - 直达无阻)</option>
-                        <option value="video">视频播放器按钮 (Video Modal)</option>
+                        <option value="video">视频播放器按钮 (Video Modal - 完美铺满)</option>
                         <option value="image">图片展示按钮 (Image Showcase)</option>
                     </select>
                 </div>
