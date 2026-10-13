@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("profile-bio").textContent = config.profile.bio;
         document.getElementById("profile-avatar").src = config.profile.avatar;
 
+        // Apply Background Image if configured
+        if (config.profile.backgroundImage) {
+            document.getElementById("site-bg").style.backgroundImage = `url('${config.profile.backgroundImage}')`;
+        }
+
         // Apply Theme
         document.body.className = `theme-${config.profile.theme || 'velvet-ruby'}`;
 
@@ -25,7 +30,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const btn = document.createElement("a");
             btn.className = "link-btn";
             
-            // Handle different types
             if (item.type === "link") {
                 btn.href = item.url;
                 btn.target = "_blank";
@@ -66,15 +70,12 @@ function openVideoModal(url) {
     
     let embedUrl = url;
     
-    // 自动识别并转换 B站链接为纯净播放器
     if (url.includes("bilibili.com") || url.includes("b23.tv") || url.includes("BV")) {
         const bvidMatch = url.match(/(BV[a-zA-Z0-9]+)/);
         if (bvidMatch) {
             embedUrl = `https://player.bilibili.com/player.html?bvid=${bvidMatch[1]}&high_quality=1&danmaku=0&autoplay=1`;
         }
-    } 
-    // 自动识别并转换 YouTube 链接
-    else if (url.includes("youtube.com/watch?v=")) {
+    } else if (url.includes("youtube.com/watch?v=")) {
         const vt = new URL(url).searchParams.get("v");
         if (vt) embedUrl = `https://www.youtube.com/embed/${vt}?autoplay=1`;
     } else if (url.includes("youtu.be/")) {
@@ -113,7 +114,6 @@ document.getElementById("close-image").addEventListener("click", () => {
     document.getElementById("image-modal").style.display = "none";
 });
 
-// Close modal on outside click
 window.addEventListener("click", (e) => {
     const videoModal = document.getElementById("video-modal");
     const imageModal = document.getElementById("image-modal");
