@@ -500,33 +500,67 @@ body {
     margin-bottom: 18px;
 }
 
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+/* 📱 手机竖屏友好的后台按钮列表卡片布局 */
+.admin-links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.links-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    font-size: 0.88rem;
-    min-width: 500px; /* 确保在极窄手机上可横向平滑滚动查看全部，不会挤压变形 */
+.admin-link-card {
+    background: rgba(12, 4, 7, 0.65);
+    border: 1px solid rgba(230, 57, 70, 0.3);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.links-table th, .links-table td {
-    padding: 10px 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+.admin-link-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
 }
 
-.links-table th {
-    color: var(--text-secondary);
+.admin-link-title {
     font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    word-break: break-all;
+    color: var(--text-primary);
 }
 
-.action-btns {
+.admin-link-url {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    word-break: break-all;
+    margin-top: 2px;
+}
+
+.admin-link-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.admin-link-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 10px;
+    margin-top: 2px;
+}
+
+.action-group-left, .action-group-right {
     display: flex;
     gap: 6px;
-    align-items: center;
 }
 
 .btn-icon {
@@ -535,8 +569,11 @@ body {
     border-radius: 6px;
     color: var(--text-secondary);
     cursor: pointer;
-    font-size: 0.9rem;
-    padding: 6px 8px;
+    font-size: 0.82rem;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
     transition: all 0.2s;
 }
 
@@ -550,7 +587,7 @@ body {
     margin-top: 20px;
 }
 
-/* 后台管理表格中的状态 Badge 样式 */
+/* 状态 Badge 样式 */
 .badge-status {
     display: inline-block;
     padding: 2px 6px;
@@ -560,10 +597,10 @@ body {
 }
 .badge-status.hidden { background: rgba(255,255,255,0.1); color: #aaa; text-decoration: line-through; }
 .badge-status.visible { background: rgba(46, 196, 182, 0.2); color: #2ec4b6; }
-.badge-status.locked { background: rgba(255, 209, 102, 0.2); color: #ffd166; margin-top: 3px; display: block; width: fit-content; }
-.badge-status.unlocked { background: rgba(255,255,255,0.05); color: #888; margin-top: 3px; display: block; width: fit-content; }
+.badge-status.locked { background: rgba(255, 209, 102, 0.2); color: #ffd166; }
+.badge-status.unlocked { background: rgba(255,255,255,0.05); color: #888; }
 
-/* 📱 手机竖屏端深度优化媒体查询 (Max-width: 900px) */
+/* 📱 手机竖屏端媒体查询 (Max-width: 900px) */
 @media(max-width: 900px) {
     .admin-body {
         padding: 10px;
