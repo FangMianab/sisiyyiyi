@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lana Vice | Official Link Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-velvet-ruby">
+    <div class="background-glow"></div>
+    
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-section">
+            <div class="avatar-wrapper">
+                <img id="profile-avatar" src="images/avatar.jpg" alt="Avatar">
+                <div class="avatar-ring"></div>
+            </div>
+            <h1 id="profile-name">Lana Vice</h1>
+            <p id="profile-bio">✨ Adult Creator & Digital Muse | All links direct & unrestricted 💋</p>
+        </div>
+
+        <!-- Links & Buttons Container -->
+        <div id="links-container" class="links-container">
+            <!-- Dynamically rendered links -->
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Lana Vice. All Rights Reserved.</p>
+            <a href="admin.html" class="hidden-admin-link" title="Admin Login"><i class="fa-solid fa-lock"></i></a>
+        </footer>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="modal">
+        <div class="modal-content video-modal-content">
+            <button class="close-modal" id="close-video">&times;</button>
+            <div class="video-container" id="video-player-wrapper">
+                <!-- Video player injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="image-modal" class="modal">
+        <div class="modal-content image-modal-content">
+            <button class="close-modal" id="close-image">&times;</button>
+            <img id="showcase-img" src="" alt="Showcase">
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

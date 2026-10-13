@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Lana Vice</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-velvet-ruby admin-body">
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-overlay">
+        <div class="login-card">
+            <h2><i class="fa-solid fa-shield-halved"></i> 后台登录</h2>
+            <p>请输入管理员账号与密码</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="login-user" required placeholder="管理员用户名">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="login-pass" required placeholder="管理员密码">
+                </div>
+                <button type="submit" class="btn-primary">安全登录</button>
+                <p id="login-error" class="error-msg"></p>
+            </form>
+            <div class="back-home">
+                <a href="index.html"><i class="fa-solid fa-arrow-left"></i> 返回主页</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen" class="dashboard-container" style="display: none;">
+        <header class="dash-header">
+            <h1><i class="fa-solid fa-sliders"></i> 个人主页管理后台</h1>
+            <div class="dash-actions">
+                <a href="index.html" target="_blank" class="btn-secondary"><i class="fa-solid fa-eye"></i> 预览主页</a>
+                <button id="logout-btn" class="btn-danger"><i class="fa-solid fa-right-from-bracket"></i> 登出</button>
+            </div>
+        </header>
+
+        <div class="dash-grid">
+            <!-- Profile Settings Card -->
+            <div class="dash-card">
+                <h2><i class="fa-solid fa-user-pen"></i> 个人资料与外观设置</h2>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label>昵称 (Name)</label>
+                        <input type="text" id="cfg-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>个人简介 (Bio)</label>
+                        <textarea id="cfg-bio" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>头像链接 / 图片路径 (Avatar URL)</label>
+                        <input type="text" id="cfg-avatar" required>
+                    </div>
+                    <div class="form-group">
+                        <label>整体色调预设 (Color Palette)</label>
+                        <select id="cfg-theme">
+                            <option value="velvet-ruby">Velvet Ruby (丝绒酒红 - 诱惑暗黑)</option>
+                            <option value="midnight-orchid">Midnight Orchid (午夜兰花 - 魅惑紫红)</option>
+                            <option value="obsidian-gold">Obsidian Gold (黑金奢华 - 经典高贵)</option>
+                            <option value="siren-crimson">Siren Crimson (海妖绯红 - 极致诱惑)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>自定义字体上传 / 输入字体名称</label>
+                        <input type="text" id="cfg-font" placeholder="例如: CustomFont 或留空默认">
+                        <input type="file" id="font-file-input" accept=".woff2,.ttf,.otf" style="margin-top: 8px;">
+                    </div>
+                    <button type="submit" class="btn-primary">保存基本设置</button>
+                </form>
+            </div>
+
+            <!-- Links & Buttons Manager Card -->
+            <div class="dash-card span-2">
+                <div class="card-header-flex">
+                    <h2><i class="fa-solid fa-link"></i> 跳转按钮与多媒体管理</h2>
+                    <button id="add-btn-trigger" class="btn-primary"><i class="fa-solid fa-plus"></i> 添加新按钮</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="links-table">
+                        <thead>
+                            <tr>
+                                <th>标题</th>
+                                <th>类型</th>
+                                <th>目标/链接</th>
+                                <th>色调</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-links-tbody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit/Add Modal -->
+    <div id="btn-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title-text">添加新按钮</h3>
+            <form id="btn-form">
+                <input type="hidden" id="edit-btn-id">
+                <div class="form-group">
+                    <label>按钮文本标题</label>
+                    <input type="text" id="btn-title-input" required placeholder="例如: 🎬 观看最新视频">
+                </div>
+                <div class="form-group">
+                    <label>按钮类型 (Type)</label>
+                    <select id="btn-type-input">
+                        <option value="link">普通网页跳转 (Link - 直达无阻)</option>
+                        <option value="video">视频播放器按钮 (Video Modal)</option>
+                        <option value="image">图片展示按钮 (Image Showcase)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>目标链接 / 视频源 / 图片路径 (URL)</label>
+                    <input type="text" id="btn-url-input" required placeholder="https://... 或 videos/xxx.mp4 或 images/xxx.png">
+                </div>
+                <div class="form-group">
+                    <label>图标 Class (FontAwesome)</label>
+                    <input type="text" id="btn-icon-input" required placeholder="fa-solid fa-fire">
+                </div>
+                <div class="form-group">
+                    <label>按钮色调 (Color Tone)</label>
+                    <select id="btn-color-input">
+                        <option value="ruby">Ruby Red (红宝石)</option>
+                        <option value="magenta">Neon Magenta (霓虹品红)</option>
+                        <option value="gold">Rose Gold (玫瑰金)</option>
+                        <option value="purple">Velvet Purple (丝绒紫)</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancel-btn-modal" class="btn-secondary">取消</button>
+                    <button type="submit" class="btn-primary">保存按钮</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
