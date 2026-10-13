@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentConfig.profile.bio = document.getElementById("cfg-bio").value;
         currentConfig.profile.avatar = document.getElementById("cfg-avatar").value;
         currentConfig.profile.backgroundImage = document.getElementById("cfg-bg").value;
+        currentConfig.profile.linkPassword = document.getElementById("cfg-password").value;
         currentConfig.profile.theme = document.getElementById("cfg-theme").value;
         
         const fontInput = document.getElementById("cfg-font").value;
@@ -51,7 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         await saveConfigToBackend(currentConfig);
-        alert("个人资料与背景图设置保存成功！");
+        alert("个人资料与访问密码保存成功！");
     });
 
     document.getElementById("add-btn-trigger").addEventListener("click", () => {
@@ -70,6 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const url = document.getElementById("btn-url-input").value;
         const icon = document.getElementById("btn-icon-input").value;
         const colorTone = document.getElementById("btn-color-input").value;
+        const isLocked = document.getElementById("btn-locked-input").value === "true";
 
         if (id) {
             const item = currentConfig.links.find(l => l.id === id);
@@ -79,6 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 item.url = url;
                 item.icon = icon;
                 item.colorTone = colorTone;
+                item.isLocked = isLocked;
             }
         } else {
             const newItem = {
@@ -87,7 +90,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 type,
                 url,
                 icon,
-                colorTone
+                colorTone,
+                isHidden: false,
+                isLocked
             };
             currentConfig.links.push(newItem);
         }
@@ -118,6 +123,7 @@ async function loadConfig() {
         document.getElementById("cfg-bio").value = currentConfig.profile.bio;
         document.getElementById("cfg-avatar").value = currentConfig.profile.avatar;
         document.getElementById("cfg-bg").value = currentConfig.profile.backgroundImage || "images/bg.jpg";
+        document.getElementById("cfg-password").value = currentConfig.profile.linkPassword || "123456";
         document.getElementById("cfg-theme").value = currentConfig.profile.theme || "velvet-ruby";
         document.getElementById("cfg-font").value = currentConfig.profile.fontFamily || "";
 
@@ -150,21 +156,39 @@ function renderAdminLinks() {
 
     currentConfig.links.forEach(item => {
         const tr = document.createElement("tr");
+        const isHidden = item.isHidden === true;
+        const isLocked = item.isLocked === true;
+
         tr.innerHTML = `
             <td><i class="${item.icon}"></i> ${item.title}</td>
-            <td><span class="badge ${item.type}">${item.type}</span></td>
+            <td>
+                <span class="badge-status ${isHidden ? 'hidden' : 'visible'}">${isHidden ? '已隐藏' : '展示中'}</span>
+                <span class="badge-status ${isLocked ? 'locked' : 'unlocked'}">${isLocked ? '🔒 已上锁' : '🔓 公开'}</span>
+            </td>
             <td><small style="color:var(--text-secondary);">${item.url}</small></td>
-            <td>${item.colorTone}</td>
             <td>
                 <div class="action-btns">
-                    <button class="btn-icon edit" onclick="editLink('${item.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="btn-icon delete" onclick="deleteLink('${item.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                    <button class="btn-icon" title="${isHidden ? '点击显示' : '点击隐藏'}" onclick="toggleHide('${item.id}')">
+                        <i class="fa-solid ${isHidden ? 'fa-eye-slash' : 'fa-eye'}" style="color:${isHidden ? '#ff6b6b' : '#2ec4b6'}"></i>
+                    </button>
+                    <button class="btn-icon edit" title="编辑" onclick="editLink('${item.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="btn-icon delete" title="删除" onclick="deleteLink('${item.id}')"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             </td>
         `;
         tbody.appendChild(tr);
     });
 }
+
+// 切换隐藏/展示状态
+window.toggleHide = async function(id) {
+    const item = currentConfig.links.find(l => l.id === id);
+    if (item) {
+        item.isHidden = !item.isHidden;
+        await saveConfigToBackend(currentConfig);
+        renderAdminLinks();
+    }
+};
 
 function openLinkModal(item = null) {
     const modal = document.getElementById("btn-modal");
@@ -178,11 +202,13 @@ function openLinkModal(item = null) {
         document.getElementById("btn-url-input").value = item.url;
         document.getElementById("btn-icon-input").value = item.icon;
         document.getElementById("btn-color-input").value = item.colorTone;
+        document.getElementById("btn-locked-input").value = item.isLocked ? "true" : "false";
     } else {
         titleText.textContent = "添加新按钮";
         document.getElementById("edit-btn-id").value = "";
         document.getElementById("btn-form").reset();
-        document.getElementById("btn-icon-input").value = "fa-solid fa-heart";
+        document.getElementById("btn-icon-input").value = "fa-solid fa-fire";
+        document.getElementById("btn-locked-input").value = "false";
     }
     modal.style.display = "flex";
 }
@@ -193,7 +219,7 @@ window.editLink = function(id) {
 };
 
 window.deleteLink = async function(id) {
-    if (confirm("确定要删除这个跳转按钮吗？")) {
+    if (confirm("确定要彻底删除这个跳转按钮吗？")) {
         currentConfig.links = currentConfig.links.filter(l => l.id !== id);
         await saveConfigToBackend(currentConfig);
         renderAdminLinks();
