@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lana Vice | Official Link Hub</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="theme-velvet-ruby">
@@ -40,9 +39,7 @@
     <div id="video-modal" class="modal">
         <div class="modal-content video-modal-content">
             <button class="close-modal" id="close-video">&times;</button>
-            <div class="video-container" id="video-player-wrapper">
-                <!-- Video player injected here -->
-            </div>
+            <div class="video-container" id="video-player-wrapper"></div>
         </div>
     </div>
 
@@ -51,6 +48,22 @@
         <div class="modal-content image-modal-content">
             <button class="close-modal" id="close-image">&times;</button>
             <img id="showcase-img" src="" alt="Showcase">
+        </div>
+    </div>
+
+    <!-- Password Verification Modal for Locked Links -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <button class="close-modal" id="close-password">&times;</button>
+            <h3><i class="fa-solid fa-shield-keyhole" style="color:var(--accent-color);"></i> 私密内容保护</h3>
+            <p style="color:var(--text-secondary); margin: 10px 0 20px 0; font-size: 0.9rem;">此按钮已被上锁，请输入访问密码：</p>
+            <form id="password-form">
+                <div class="form-group">
+                    <input type="password" id="access-password-input" required placeholder="请输入访问密码">
+                </div>
+                <button type="submit" class="btn-primary">确认解锁</button>
+                <p id="password-error" class="error-msg"></p>
+            </form>
         </div>
     </div>
 
