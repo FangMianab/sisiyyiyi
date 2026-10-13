@@ -47,7 +47,7 @@ body {
     background-color: #0c0407;
 }
 
-/* 背景图：将 blur(10px) 改为 blur(0px)（或极小的 1px），背景就会非常清楚 */
+/* 背景图微模糊化 + 压暗处理 */
 .site-bg-image {
     position: fixed;
     top: -10px;
@@ -56,12 +56,11 @@ body {
     bottom: -10px;
     background-size: cover;
     background-position: center;
-    filter: blur(0px) brightness(0.7); /* 取消模糊化(0px)，并适当保留亮度压暗(0.7)以保护文字阅读 */
+    filter: blur(0px) brightness(0.7);
     transform: scale(1.05);
     z-index: -2;
 }
 
-/* 整体诱惑暗黑渐变压暗遮罩层 */
 .site-bg-overlay {
     position: fixed;
     top: 0;
@@ -233,29 +232,31 @@ body {
     z-index: 1000;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 15px;
 }
 
 .modal-content {
     background: #190c12;
     border: 1px solid rgba(230, 57, 70, 0.4);
     border-radius: 16px;
-    padding: 30px;
+    padding: 25px 20px;
     width: 100%;
     max-width: 600px;
     position: relative;
     box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .video-modal-content {
     max-width: 800px;
-    padding: 40px 20px 20px 20px;
+    padding: 40px 15px 15px 15px;
 }
 
 .image-modal-content {
     max-width: 500px;
     text-align: center;
-    padding: 40px 20px 20px 20px;
+    padding: 40px 15px 15px 15px;
 }
 
 .image-modal-content img {
@@ -266,8 +267,8 @@ body {
 
 .close-modal {
     position: absolute;
-    top: 15px;
-    right: 20px;
+    top: 10px;
+    right: 15px;
     background: none;
     border: none;
     color: var(--text-primary);
@@ -316,12 +317,13 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 2000;
+    padding: 15px;
 }
 
 .login-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    padding: 40px;
+    padding: 30px 20px;
     border-radius: 20px;
     width: 100%;
     max-width: 400px;
@@ -341,13 +343,13 @@ body {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     text-align: left;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-size: 0.85rem;
     color: var(--text-secondary);
     font-weight: 500;
@@ -393,12 +395,12 @@ body {
 }
 
 .btn-secondary {
-    padding: 10px 18px;
+    padding: 10px 16px;
     background: rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     text-decoration: none;
     transition: background 0.2s;
@@ -409,12 +411,12 @@ body {
 }
 
 .btn-danger {
-    padding: 10px 18px;
+    padding: 10px 16px;
     background: rgba(230, 57, 70, 0.2);
     color: #ff6b6b;
     border: 1px solid rgba(230, 57, 70, 0.4);
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: background 0.2s;
 }
@@ -454,46 +456,40 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     border-bottom: 1px solid rgba(230, 57, 70, 0.2);
-    padding-bottom: 20px;
+    padding-bottom: 15px;
 }
 
 .dash-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .dash-actions {
     display: flex;
-    gap: 15px;
+    gap: 10px;
 }
 
 .dash-grid {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
-    gap: 30px;
-}
-
-@media(max-width: 900px) {
-    .dash-grid {
-        grid-template-columns: 1fr;
-    }
+    gap: 25px;
 }
 
 .dash-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 16px;
-    padding: 25px;
+    padding: 22px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.5);
 }
 
 .dash-card h2 {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
+    font-size: 1.1rem;
+    margin-bottom: 18px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     color: var(--text-primary);
 }
 
@@ -501,22 +497,24 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .table-responsive {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .links-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    min-width: 500px; /* 确保在极窄手机上可横向平滑滚动查看全部，不会挤压变形 */
 }
 
 .links-table th, .links-table td {
-    padding: 12px;
+    padding: 10px 8px;
     border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -527,36 +525,75 @@ body {
 
 .action-btns {
     display: flex;
-    gap: 8px;
+    gap: 6px;
+    align-items: center;
 }
 
 .btn-icon {
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
     color: var(--text-secondary);
     cursor: pointer;
-    font-size: 1rem;
-    transition: color 0.2s;
+    font-size: 0.9rem;
+    padding: 6px 8px;
+    transition: all 0.2s;
 }
 
-.btn-icon.edit:hover { color: #ffd166; }
-.btn-icon.delete:hover { color: #ff6b6b; }
+.btn-icon:hover { background: rgba(255, 255, 255, 0.15); color: var(--text-primary); }
+.btn-icon.edit:hover { color: #ffd166; border-color: rgba(255, 209, 102, 0.4); }
+.btn-icon.delete:hover { color: #ff6b6b; border-color: rgba(255, 107, 107, 0.4); }
 
 .modal-buttons {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     margin-top: 20px;
 }
 
 /* 后台管理表格中的状态 Badge 样式 */
 .badge-status {
     display: inline-block;
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
     font-weight: 600;
 }
 .badge-status.hidden { background: rgba(255,255,255,0.1); color: #aaa; text-decoration: line-through; }
 .badge-status.visible { background: rgba(46, 196, 182, 0.2); color: #2ec4b6; }
-.badge-status.locked { background: rgba(255, 209, 102, 0.2); color: #ffd166; margin-left: 4px; }
-.badge-status.unlocked { background: rgba(255,255,255,0.05); color: #888; margin-left: 4px; }
+.badge-status.locked { background: rgba(255, 209, 102, 0.2); color: #ffd166; margin-top: 3px; display: block; width: fit-content; }
+.badge-status.unlocked { background: rgba(255,255,255,0.05); color: #888; margin-top: 3px; display: block; width: fit-content; }
+
+/* 📱 手机竖屏端深度优化媒体查询 (Max-width: 900px) */
+@media(max-width: 900px) {
+    .admin-body {
+        padding: 10px;
+    }
+    .dash-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .dash-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+    .dash-actions a, .dash-actions button {
+        flex: 1;
+        text-align: center;
+    }
+    .dash-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .dash-card {
+        padding: 16px;
+    }
+    .card-header-flex {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .card-header-flex button {
+        width: 100%;
+    }
+}
