@@ -4,6 +4,7 @@ const defaultConfig = {
     name: "Lana Vice",
     bio: "✨ Adult Creator & Digital Muse | All links direct & unrestricted 💋",
     avatar: "images/avatar.jpg",
+    backgroundImage: "images/bg.jpg", // 背景图片路径
     theme: "velvet-ruby",
     fontFamily: "Default"
   },
@@ -64,11 +65,11 @@ export async function onRequestPost(context) {
     const newConfig = await request.json();
     if (env.BIO_KV) {
       await env.BIO_KV.put("site_config", JSON.stringify(newConfig));
-      return new Response(JSON.stringify({ success: true, message: "成功保存到 Cloudflare KV 数据库！" }), {
+      return new Response(JSON.stringify({ success: true, message: "成功保存配置！" }), {
         headers: { "Content-Type": "application/json" }
       });
     } else {
-      return new Response(JSON.stringify({ success: false, message: "未检测到 BIO_KV 绑定，数据仅暂存内存中。" }), {
+      return new Response(JSON.stringify({ success: false, message: "未检测到 BIO_KV 绑定。" }), {
         status: 400,
         headers: { "Content-Type": "application/json" }
       });
