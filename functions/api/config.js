@@ -1,12 +1,12 @@
-// 默认配置数据
 const defaultConfig = {
   profile: {
     name: "Lana Vice",
     bio: "✨ Adult Creator & Digital Muse | All links direct & unrestricted 💋",
     avatar: "images/avatar.jpg",
-    backgroundImage: "images/bg.jpg", // 背景图片路径
+    backgroundImage: "images/bg.jpg",
     theme: "velvet-ruby",
-    fontFamily: "Default"
+    fontFamily: "Default",
+    linkPassword: "123456" // 默认私密按钮共享密码
   },
   links: [
     {
@@ -15,7 +15,9 @@ const defaultConfig = {
       url: "https://link.me/@lanavice",
       type: "link",
       icon: "fa-solid fa-fire",
-      colorTone: "ruby"
+      colorTone: "ruby",
+      isHidden: false,
+      isLocked: false
     },
     {
       id: "2",
@@ -23,7 +25,9 @@ const defaultConfig = {
       url: "videos/sample.mp4",
       type: "video",
       icon: "fa-solid fa-play-circle",
-      colorTone: "magenta"
+      colorTone: "magenta",
+      isHidden: false,
+      isLocked: true // 示例：这个按钮被上锁了
     },
     {
       id: "3",
@@ -31,12 +35,13 @@ const defaultConfig = {
       url: "images/qr.png",
       type: "image",
       icon: "fa-solid fa-qrcode",
-      colorTone: "gold"
+      colorTone: "gold",
+      isHidden: false,
+      isLocked: false
     }
   ]
 };
 
-// 获取配置（优先读取 KV）
 export async function onRequestGet(context) {
   const { env } = context;
   try {
@@ -58,7 +63,6 @@ export async function onRequestGet(context) {
   }
 }
 
-// 保存配置到 KV
 export async function onRequestPost(context) {
   const { request, env } = context;
   try {
