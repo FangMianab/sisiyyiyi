@@ -59,16 +59,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// Video Modal Handler
+// Video Modal Handler (Auto-convert Bilibili / YouTube links to pure fullscreen embed players)
 function openVideoModal(url) {
     const modal = document.getElementById("video-modal");
     const wrapper = document.getElementById("video-player-wrapper");
     
-    // Check if external embed (like Bilibili / YouTube) or local video
-    if (url.includes("bilibili.com") || url.includes("youtube.com") || url.includes("iframe")) {
-        wrapper.innerHTML = `<iframe src="${url}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
+    let embedUrl = url;
+    
+    // 自动识别并转换 B站链接为纯净播放器
+    if (url.includes("bilibili.com") || url.includes("b23.tv") || url.includes("BV")) {
+        const bvidMatch = url.match(/(BV[a-zA-Z0-9]+)/);
+        if (bvidMatch) {
+            embedUrl = `https://player.bilibili.com/player.html?bvid=${bvidMatch[1]}&high_quality=1&danmaku=0&autoplay=1`;
+        }
+    } 
+    // 自动识别并转换 YouTube 链接
+    else if (url.includes("youtube.com/watch?v=")) {
+        const vt = new URL(url).searchParams.get("v");
+        if (vt) embedUrl = `https://www.youtube.com/embed/${vt}?autoplay=1`;
+    } else if (url.includes("youtu.be/")) {
+        const parts = url.split("youtu.be/");
+        if (parts[1]) {
+            const vt = parts[1].split("?")[0];
+            embedUrl = `https://www.youtube.com/embed/${vt}?autoplay=1`;
+        }
+    }
+
+    if (embedUrl.includes("player.bilibili.com") || embedUrl.includes("youtube.com/embed") || embedUrl.includes("iframe")) {
+        wrapper.innerHTML = `<iframe src="${embedUrl}" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:100%;position:absolute;top:0;left:0;border-radius:10px;"></iframe>`;
     } else {
-        wrapper.innerHTML = `<video src="${url}" controls autoplay playsinline></video>`;
+        wrapper.innerHTML = `<video src="${embedUrl}" controls autoplay playsinline style="width:100%;height:100%;position:absolute;top:0;left:0;object-fit:contain;background:#000;border-radius:10px;"></video>`;
     }
     
     modal.style.display = "flex";
