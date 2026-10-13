@@ -47,7 +47,7 @@ body {
     background-color: #0c0407;
 }
 
-/* 背景图微模糊化 + 压暗处理（绝不喧宾夺主） */
+/* 背景图：将 blur(10px) 改为 blur(0px)（或极小的 1px），背景就会非常清楚 */
 .site-bg-image {
     position: fixed;
     top: -10px;
@@ -56,7 +56,7 @@ body {
     bottom: -10px;
     background-size: cover;
     background-position: center;
-    filter: blur(10px) brightness(0.6);
+    filter: blur(0px) brightness(0.7); /* 取消模糊化(0px)，并适当保留亮度压暗(0.7)以保护文字阅读 */
     transform: scale(1.05);
     z-index: -2;
 }
