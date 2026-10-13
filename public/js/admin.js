@@ -150,39 +150,59 @@ async function saveConfigToBackend(cfg) {
     }
 }
 
+// 📱 核心升级：渲染移动端竖屏友好的卡片列表
 function renderAdminLinks() {
-    const tbody = document.getElementById("admin-links-tbody");
-    tbody.innerHTML = "";
+    const container = document.getElementById("admin-links-container");
+    container.innerHTML = "";
+
+    if (!currentConfig.links || currentConfig.links.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-secondary);text-align:center;padding:20px;">暂无跳转按钮，请点击上方添加</p>`;
+        return;
+    }
 
     currentConfig.links.forEach((item, index) => {
-        const tr = document.createElement("tr");
+        const card = document.createElement("div");
+        card.className = "admin-link-card";
         const isHidden = item.isHidden === true;
         const isLocked = item.isLocked === true;
 
-        tr.innerHTML = `
-            <td><i class="${item.icon}"></i> ${item.title}</td>
-            <td>
-                <span class="badge-status ${isHidden ? 'hidden' : 'visible'}">${isHidden ? '已隐藏' : '展示中'}</span>
-                <span class="badge-status ${isLocked ? 'locked' : 'unlocked'}">${isLocked ? '🔒 已上锁' : '🔓 公开'}</span>
-            </td>
-            <td><small style="color:var(--text-secondary);">${item.url}</small></td>
-            <td>
-                <div class="action-btns">
+        card.innerHTML = `
+            <div class="admin-link-info">
+                <div>
+                    <div class="admin-link-title">
+                        <i class="${item.icon || 'fa-solid fa-link'}"></i>
+                        <span>${item.title}</span>
+                    </div>
+                    <div class="admin-link-url">${item.url}</div>
+                </div>
+                <div class="admin-link-badges">
+                    <span class="badge-status ${isHidden ? 'hidden' : 'visible'}">${isHidden ? '已隐藏' : '展示中'}</span>
+                    <span class="badge-status ${isLocked ? 'locked' : 'unlocked'}">${isLocked ? '🔒 已上锁' : '🔓 公开'}</span>
+                </div>
+            </div>
+            <div class="admin-link-actions">
+                <div class="action-group-left">
                     <button class="btn-icon" title="上移" onclick="moveLinkUp(${index})" ${index === 0 ? 'style="opacity:0.3;cursor:not-allowed;"' : ''}>
-                        <i class="fa-solid fa-arrow-up"></i>
+                        <i class="fa-solid fa-arrow-up"></i> 上移
                     </button>
                     <button class="btn-icon" title="下移" onclick="moveLinkDown(${index})" ${index === currentConfig.links.length - 1 ? 'style="opacity:0.3;cursor:not-allowed;"' : ''}>
-                        <i class="fa-solid fa-arrow-down"></i>
+                        <i class="fa-solid fa-arrow-down"></i> 下移
                     </button>
+                </div>
+                <div class="action-group-right">
                     <button class="btn-icon" title="${isHidden ? '点击显示' : '点击隐藏'}" onclick="toggleHide('${item.id}')">
                         <i class="fa-solid ${isHidden ? 'fa-eye-slash' : 'fa-eye'}" style="color:${isHidden ? '#ff6b6b' : '#2ec4b6'}"></i>
                     </button>
-                    <button class="btn-icon edit" title="编辑" onclick="editLink('${item.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
-                    <button class="btn-icon delete" title="删除" onclick="deleteLink('${item.id}')"><i class="fa-solid fa-trash-can"></i></button>
+                    <button class="btn-icon edit" title="编辑" onclick="editLink('${item.id}')">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="btn-icon delete" title="删除" onclick="deleteLink('${item.id}')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
-            </td>
+            </div>
         `;
-        tbody.appendChild(tr);
+        container.appendChild(card);
     });
 }
 
