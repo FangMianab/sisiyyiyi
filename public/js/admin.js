@@ -154,7 +154,7 @@ function renderAdminLinks() {
     const tbody = document.getElementById("admin-links-tbody");
     tbody.innerHTML = "";
 
-    currentConfig.links.forEach(item => {
+    currentConfig.links.forEach((item, index) => {
         const tr = document.createElement("tr");
         const isHidden = item.isHidden === true;
         const isLocked = item.isLocked === true;
@@ -168,6 +168,12 @@ function renderAdminLinks() {
             <td><small style="color:var(--text-secondary);">${item.url}</small></td>
             <td>
                 <div class="action-btns">
+                    <button class="btn-icon" title="上移" onclick="moveLinkUp(${index})" ${index === 0 ? 'style="opacity:0.3;cursor:not-allowed;"' : ''}>
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                    <button class="btn-icon" title="下移" onclick="moveLinkDown(${index})" ${index === currentConfig.links.length - 1 ? 'style="opacity:0.3;cursor:not-allowed;"' : ''}>
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </button>
                     <button class="btn-icon" title="${isHidden ? '点击显示' : '点击隐藏'}" onclick="toggleHide('${item.id}')">
                         <i class="fa-solid ${isHidden ? 'fa-eye-slash' : 'fa-eye'}" style="color:${isHidden ? '#ff6b6b' : '#2ec4b6'}"></i>
                     </button>
@@ -179,6 +185,28 @@ function renderAdminLinks() {
         tbody.appendChild(tr);
     });
 }
+
+// 上移按钮顺序
+window.moveLinkUp = async function(index) {
+    if (index <= 0) return;
+    const links = currentConfig.links;
+    const temp = links[index];
+    links[index] = links[index - 1];
+    links[index - 1] = temp;
+    await saveConfigToBackend(currentConfig);
+    renderAdminLinks();
+};
+
+// 下移按钮顺序
+window.moveLinkDown = async function(index) {
+    const links = currentConfig.links;
+    if (index >= links.length - 1) return;
+    const temp = links[index];
+    links[index] = links[index + 1];
+    links[index + 1] = temp;
+    await saveConfigToBackend(currentConfig);
+    renderAdminLinks();
+};
 
 // 切换隐藏/展示状态
 window.toggleHide = async function(id) {
