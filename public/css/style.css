@@ -547,3 +547,16 @@ body {
     gap: 15px;
     margin-top: 20px;
 }
+
+/* 后台管理表格中的状态 Badge 样式 */
+.badge-status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-status.hidden { background: rgba(255,255,255,0.1); color: #aaa; text-decoration: line-through; }
+.badge-status.visible { background: rgba(46, 196, 182, 0.2); color: #2ec4b6; }
+.badge-status.locked { background: rgba(255, 209, 102, 0.2); color: #ffd166; margin-left: 4px; }
+.badge-status.unlocked { background: rgba(255,255,255,0.05); color: #888; margin-left: 4px; }
