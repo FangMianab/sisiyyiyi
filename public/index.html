@@ -12,9 +12,9 @@
     <div id="site-bg" class="site-bg-image" style="background-image: url('images/bg.jpg');"></div>
     <div class="site-bg-overlay"></div>
 
-    <!-- 右上角“更多功能”浮动按钮 -->
-    <button id="open-features-btn" class="more-features-btn" title="更多功能">
-        <i class="fa-solid fa-compass"></i> 更多功能
+    <!-- 右上角“更多功能/举报”浮动按钮 -->
+    <button id="open-features-btn" class="more-features-btn" title="更多功能/举报">
+        <i class="fa-solid fa-compass"></i> 更多功能/举报
     </button>
     
     <div class="container">
@@ -36,7 +36,8 @@
         <!-- Footer -->
         <footer class="footer">
             <p>&copy; 2026 sisiyyiyi. All Rights Reserved.</p>
-            <a href="admin.html" class="hidden-admin-link" title="Admin Login"><i class="fa-solid fa-lock"></i> 管理后台</a>
+            <!-- 仅保留锁图标，去掉了“管理后台”文字 -->
+            <a href="admin.html" class="hidden-admin-link" title="Admin Login"><i class="fa-solid fa-lock"></i></a>
         </footer>
     </div>
 
@@ -61,7 +62,7 @@
             <div class="feature-card">
                 <h3><i class="fa-solid fa-triangle-exclamation"></i> 不良行为投诉与举报</h3>
                 <p>如发现侵权、冒充或不良行为，请随时向我反馈</p>
-                <button id="toggle-report-btn" class="btn-secondary" style="width: 100%; margin-top: 10px;"><i class="fa-solid id-card"></i> 投诉/举报</button>
+                <button id="toggle-report-btn" class="btn-secondary" style="width: 100%; margin-top: 10px;"><i class="fa-solid fa-triangle-exclamation"></i> 投诉/举报</button>
                 
                 <!-- 举报表单（默认隐藏，点击后延展出现） -->
                 <form id="report-form" class="report-form-box" style="display: none;">
