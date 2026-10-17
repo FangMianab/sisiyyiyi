@@ -124,7 +124,6 @@ async function loadConfig() {
         const res = await fetch('/api/config');
         currentConfig = await res.json();
 
-        // 默认名更换为 sisiyyiyi
         document.getElementById("cfg-name").value = currentConfig.profile.name || "sisiyyiyi";
         document.getElementById("cfg-bio").value = currentConfig.profile.bio;
         document.getElementById("cfg-avatar").value = currentConfig.profile.avatar;
@@ -201,6 +200,7 @@ window.deleteReport = async function(id) {
         } catch (err) {
             alert("请求出错");
         }
+    }
 };
 
 function escapeHtml(str) {
