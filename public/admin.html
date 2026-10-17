@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Lana Vice</title>
+    <title>Admin Dashboard | sisiyyiyi</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -83,15 +83,23 @@
                 </form>
             </div>
 
-            <!-- Links & Buttons Manager Card (Mobile Card List) -->
+            <!-- Links & Buttons Manager Card -->
             <div class="dash-card">
                 <div class="card-header-flex">
                     <h2><i class="fa-solid fa-link"></i> 跳转按钮与多媒体管理</h2>
                     <button id="add-btn-trigger" class="btn-primary"><i class="fa-solid fa-plus"></i> 添加新按钮</button>
                 </div>
-                <!-- 竖屏适配的卡片列表容器 -->
-                <div id="admin-links-container" class="admin-links-list">
-                    <!-- 动态生成的卡片插入到这里 -->
+                <div id="admin-links-container" class="admin-links-list"></div>
+            </div>
+
+            <!-- 需求 5：访客投诉与举报管理区域卡片 -->
+            <div class="dash-card" style="grid-column: 1 / -1;">
+                <div class="card-header-flex">
+                    <h2><i class="fa-solid fa-triangle-exclamation"></i> 访客投诉与举报信息管理</h2>
+                    <button id="refresh-reports-btn" class="btn-secondary"><i class="fa-solid fa-rotate"></i> 刷新举报列表</button>
+                </div>
+                <div id="admin-reports-container" class="admin-links-list">
+                    <!-- 举报信息动态渲染在这里 -->
                 </div>
             </div>
         </div>
