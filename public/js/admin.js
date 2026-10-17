@@ -101,12 +101,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("btn-modal").style.display = "none";
         renderAdminLinks();
     });
+
+    document.getElementById("refresh-reports-btn").addEventListener("click", () => {
+        loadReports();
+    });
 });
 
 async function showDashboard() {
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("dashboard-screen").style.display = "block";
     await loadConfig();
+    await loadReports();
 }
 
 function showLogin() {
@@ -119,7 +124,8 @@ async function loadConfig() {
         const res = await fetch('/api/config');
         currentConfig = await res.json();
 
-        document.getElementById("cfg-name").value = currentConfig.profile.name;
+        // 默认名更换为 sisiyyiyi
+        document.getElementById("cfg-name").value = currentConfig.profile.name || "sisiyyiyi";
         document.getElementById("cfg-bio").value = currentConfig.profile.bio;
         document.getElementById("cfg-avatar").value = currentConfig.profile.avatar;
         document.getElementById("cfg-bg").value = currentConfig.profile.backgroundImage || "images/bg.jpg";
@@ -131,6 +137,74 @@ async function loadConfig() {
     } catch (err) {
         console.error("Failed to load config", err);
     }
+}
+
+async function loadReports() {
+    try {
+        const res = await fetch('/api/reports');
+        const reports = await res.json();
+        renderAdminReports(reports);
+    } catch (err) {
+        console.error("Failed to load reports", err);
+    }
+}
+
+function renderAdminReports(reports) {
+    const container = document.getElementById("admin-reports-container");
+    container.innerHTML = "";
+
+    if (!reports || reports.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-secondary);text-align:center;padding:15px;font-size:0.85rem;">暂无收到任何投诉与举报信息</p>`;
+        return;
+    }
+
+    reports.forEach(report => {
+        const card = document.createElement("div");
+        card.className = "admin-link-card";
+        card.innerHTML = `
+            <div class="admin-link-info">
+                <div>
+                    <div class="admin-link-title" style="color:#ff6b6b;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>举报理由：${escapeHtml(report.reason)}</span>
+                    </div>
+                    <div class="admin-link-url" style="margin-top:6px;">
+                        手机：${escapeHtml(report.phone)} &nbsp;|&nbsp; QQ：${escapeHtml(report.qq)}
+                    </div>
+                    <div style="font-size:0.75rem;color:rgba(208,179,189,0.5);margin-top:4px;">
+                        提交时间：${report.time}
+                    </div>
+                </div>
+            </div>
+            <div class="admin-link-actions" style="justify-content:flex-end;">
+                <button class="btn-icon delete" onclick="deleteReport('${report.id}')">
+                    <i class="fa-solid fa-trash-can"></i> 删除并释放空间
+                </button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+window.deleteReport = async function(id) {
+    if (confirm("确定要删除这条举报信息吗？")) {
+        try {
+            const res = await fetch(`/api/reports?id=${id}`, {
+                method: 'DELETE'
+            });
+            const data = await res.json();
+            if (data.success) {
+                loadReports();
+            } else {
+                alert("删除失败: " + data.message);
+            }
+        } catch (err) {
+            alert("请求出错");
+        }
+};
+
+function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 async function saveConfigToBackend(cfg) {
@@ -150,7 +224,6 @@ async function saveConfigToBackend(cfg) {
     }
 }
 
-// 📱 核心升级：渲染移动端竖屏友好的卡片列表
 function renderAdminLinks() {
     const container = document.getElementById("admin-links-container");
     container.innerHTML = "";
@@ -206,7 +279,6 @@ function renderAdminLinks() {
     });
 }
 
-// 上移按钮顺序
 window.moveLinkUp = async function(index) {
     if (index <= 0) return;
     const links = currentConfig.links;
@@ -217,7 +289,6 @@ window.moveLinkUp = async function(index) {
     renderAdminLinks();
 };
 
-// 下移按钮顺序
 window.moveLinkDown = async function(index) {
     const links = currentConfig.links;
     if (index >= links.length - 1) return;
@@ -228,7 +299,6 @@ window.moveLinkDown = async function(index) {
     renderAdminLinks();
 };
 
-// 切换隐藏/展示状态
 window.toggleHide = async function(id) {
     const item = currentConfig.links.find(l => l.id === id);
     if (item) {
