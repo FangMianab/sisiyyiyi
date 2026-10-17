@@ -25,7 +25,6 @@
                 <div class="avatar-ring"></div>
             </div>
             <h1 id="profile-name">sisiyyiyi</h1>
-            <!-- 个人简介文字已完全交由后台动态控制渲染 -->
             <p id="profile-bio"></p>
         </div>
 
@@ -67,16 +66,16 @@
                 <!-- 举报表单（默认隐藏，点击后延展出现） -->
                 <form id="report-form" class="report-form-box" style="display: none;">
                     <div class="form-group">
-                        <label>举报理由 <span class="required-star">*</span></label>
-                        <textarea id="report-reason" rows="3" placeholder="请详细描述举报原因..."></textarea>
+                        <label>举报理由 <span class="required-star">*</span> (<span id="reason-count">0</span>/100字)</label>
+                        <textarea id="report-reason" rows="3" maxlength="100" placeholder="请详细描述举报原因（最多100字）..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label>手机 <span class="required-star">*</span></label>
-                        <input type="text" id="report-phone" placeholder="请输入您的手机号码">
+                        <label>手机 <span class="required-star">*</span> (仅能输入11位纯数字)</label>
+                        <input type="text" id="report-phone" maxlength="11" placeholder="请输入11位手机号码">
                     </div>
                     <div class="form-group">
-                        <label>QQ <span class="required-star">*</span></label>
-                        <input type="text" id="report-qq" placeholder="请输入您的QQ号">
+                        <label>QQ <span class="required-star">*</span> (仅能输入纯数字)</label>
+                        <input type="text" id="report-qq" placeholder="请输入纯数字QQ号">
                     </div>
                     <button type="submit" class="btn-primary">提交举报</button>
                     <p id="report-tips" class="report-tips-text"></p>
