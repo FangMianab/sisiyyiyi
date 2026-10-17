@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lana Vice | Official Link Hub</title>
+    <title>sisiyyiyi | Official Link Hub</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,6 +11,11 @@
     <!-- 动态背景图与微模糊压暗遮罩层 -->
     <div id="site-bg" class="site-bg-image" style="background-image: url('images/bg.jpg');"></div>
     <div class="site-bg-overlay"></div>
+
+    <!-- 右上角“更多功能”浮动按钮 -->
+    <button id="open-features-btn" class="more-features-btn" title="更多功能">
+        <i class="fa-solid fa-compass"></i> 更多功能
+    </button>
     
     <div class="container">
         <!-- Profile Header -->
@@ -19,7 +24,7 @@
                 <img id="profile-avatar" src="images/avatar.jpg" alt="Avatar">
                 <div class="avatar-ring"></div>
             </div>
-            <h1 id="profile-name">Lana Vice</h1>
+            <h1 id="profile-name">sisiyyiyi</h1>
             <p id="profile-bio">✨ Adult Creator & Digital Muse | All links direct & unrestricted 💋</p>
         </div>
 
@@ -30,9 +35,53 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>&copy; 2026 Lana Vice. All Rights Reserved.</p>
-            <a href="admin.html" class="hidden-admin-link" title="Admin Login"><i class="fa-solid fa-lock"></i></a>
+            <p>&copy; 2026 sisiyyiyi. All Rights Reserved.</p>
+            <a href="admin.html" class="hidden-admin-link" title="Admin Login"><i class="fa-solid fa-lock"></i> 管理后台</a>
         </footer>
+    </div>
+
+    <!-- 更多功能覆盖页面（默认隐藏） -->
+    <div id="more-features-modal" class="feature-overlay" style="display: none;">
+        <div class="feature-overlay-header">
+            <button id="close-features-btn" class="btn-secondary"><i class="fa-solid fa-arrow-left"></i> 返回主页</button>
+            <h2>更多功能与服务</h2>
+        </div>
+        <div class="feature-overlay-body">
+            <!-- 二维码区块 -->
+            <div class="feature-card">
+                <h3><i class="fa-solid fa-qrcode"></i> 主页专属二维码</h3>
+                <p>长按或点击下方按钮保存主页二维码，方便分享推广</p>
+                <div class="qr-box">
+                    <img id="feature-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fsisiyyiyi1.pages.dev%2F" alt="QR Code">
+                </div>
+                <button id="download-qr-btn" class="btn-primary" style="margin-top: 15px;"><i class="fa-solid fa-download"></i> 保存二维码到设备</button>
+            </div>
+
+            <!-- 投诉举报区块 -->
+            <div class="feature-card">
+                <h3><i class="fa-solid fa-triangle-exclamation"></i> 不良行为投诉与举报</h3>
+                <p>如发现侵权、冒充或不良行为，请随时向我反馈</p>
+                <button id="toggle-report-btn" class="btn-secondary" style="width: 100%; margin-top: 10px;"><i class="fa-solid id-card"></i> 投诉/举报</button>
+                
+                <!-- 举报表单（默认隐藏，点击后延展出现） -->
+                <form id="report-form" class="report-form-box" style="display: none;">
+                    <div class="form-group">
+                        <label>举报理由 <span class="required-star">*</span></label>
+                        <textarea id="report-reason" rows="3" placeholder="请详细描述举报原因..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>手机 <span class="required-star">*</span></label>
+                        <input type="text" id="report-phone" placeholder="请输入您的手机号码">
+                    </div>
+                    <div class="form-group">
+                        <label>QQ <span class="required-star">*</span></label>
+                        <input type="text" id="report-qq" placeholder="请输入您的QQ号">
+                    </div>
+                    <button type="submit" class="btn-primary">提交举报</button>
+                    <p id="report-tips" class="report-tips-text"></p>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Video Modal -->
@@ -51,7 +100,7 @@
         </div>
     </div>
 
-    <!-- Password Verification Modal for Locked Links -->
+    <!-- Password Modal -->
     <div id="password-modal" class="modal">
         <div class="modal-content" style="max-width: 400px; text-align: center;">
             <button class="close-modal" id="close-password">&times;</button>
