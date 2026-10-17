@@ -7,8 +7,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!response.ok) throw new Error("Failed to load configuration");
         globalConfig = await response.json();
 
+        // 需求 1：动态设置浏览器标签页标题
+        const siteName = globalConfig.profile.name || "sisiyyiyi";
+        document.title = `${siteName} | Official Link Hub`;
+
         // Apply Profile
-        document.getElementById("profile-name").textContent = globalConfig.profile.name;
+        document.getElementById("profile-name").textContent = siteName;
         document.getElementById("profile-bio").textContent = globalConfig.profile.bio;
         document.getElementById("profile-avatar").src = globalConfig.profile.avatar;
 
@@ -36,7 +40,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
                 if (item.isLocked) {
-                    // Trigger password modal
                     pendingActionItem = item;
                     openPasswordModal();
                 } else {
@@ -57,6 +60,103 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (err) {
         console.error("Error loading bio data:", err);
+    }
+});
+
+// 需求 4：更多功能页面交互逻辑
+const moreModal = document.getElementById("more-features-modal");
+document.getElementById("open-features-btn").addEventListener("click", () => {
+    moreModal.style.display = "flex";
+});
+document.getElementById("close-features-btn").addEventListener("click", () => {
+    moreModal.style.display = "none";
+});
+
+// 二维码保存按钮
+document.getElementById("download-qr-btn").addEventListener("click", async () => {
+    try {
+        const qrUrl = document.getElementById("feature-qr-img").src;
+        const res = await fetch(qrUrl);
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "sisiyyiyi-home-qrcode.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    } catch (err) {
+        window.open(document.getElementById("feature-qr-img").src, "_blank");
+    }
+});
+
+// 投诉/举报按钮：点击后延展显示表单
+const toggleReportBtn = document.getElementById("toggle-report-btn");
+const reportForm = document.getElementById("report-form");
+toggleReportBtn.addEventListener("click", () => {
+    if (reportForm.style.display === "none") {
+        reportForm.style.display = "flex";
+        toggleReportBtn.innerHTML = `<i class="fa-solid fa-chevron-up"></i> 收起举报窗口`;
+    } else {
+        reportForm.style.display = "none";
+        toggleReportBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 投诉/举报`;
+    }
+});
+
+// 举报表单提交与必填项验证、变色提醒
+reportForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const reasonInput = document.getElementById("report-reason");
+    const phoneInput = document.getElementById("report-phone");
+    const qqInput = document.getElementById("report-qq");
+    const tips = document.getElementById("report-tips");
+
+    let isValid = true;
+    [reasonInput, phoneInput, qqInput].forEach(input => {
+        if (!input.value.trim()) {
+            input.classList.add("input-error");
+            isValid = false;
+        } else {
+            input.classList.remove("input-error");
+        }
+    });
+
+    if (!isValid) {
+        tips.style.color = "#ff6b6b";
+        tips.textContent = "请完整填写所有必填项（红框标记处）才能提交！";
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/reports', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                reason: reasonInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                qq: qqInput.value.trim()
+            })
+        });
+        const data = await res.json();
+        if (data.success) {
+            tips.style.color = "#2ec4b6";
+            tips.textContent = "举报信息已成功提交至后台，感谢您的反馈！";
+            reasonInput.value = "";
+            phoneInput.value = "";
+            qqInput.value = "";
+            setTimeout(() => {
+                reportForm.style.display = "none";
+                tips.textContent = "";
+                toggleReportBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 投诉/举报`;
+            }, 2500);
+        } else {
+            tips.style.color = "#ff6b6b";
+            tips.textContent = data.message || "提交失败";
+        }
+    } catch (err) {
+        tips.style.color = "#ff6b6b";
+        tips.textContent = "网络异常，提交失败";
     }
 });
 
