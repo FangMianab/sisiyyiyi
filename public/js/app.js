@@ -104,12 +104,33 @@ toggleReportBtn.addEventListener("click", () => {
     }
 });
 
-// 举报表单提交与正则判定规则（手机11位纯数字，QQ纯数字）
+// 实时输入拦截与限制逻辑
+const reasonInput = document.getElementById("report-reason");
+const phoneInput = document.getElementById("report-phone");
+const qqInput = document.getElementById("report-qq");
+const reasonCount = document.getElementById("reason-count");
+
+// 1. 举报理由：实时统计字数（最多100字由 maxlength 和截断双重保证）
+reasonInput.addEventListener("input", () => {
+    if (reasonInput.value.length > 100) {
+        reasonInput.value = reasonInput.value.slice(0, 100);
+    }
+    reasonCount.textContent = reasonInput.value.length;
+});
+
+// 2. 手机号：实时过滤非数字，且最多11位
+phoneInput.addEventListener("input", () => {
+    phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 11);
+});
+
+// 3. QQ号：实时过滤非数字
+qqInput.addEventListener("input", () => {
+    qqInput.value = qqInput.value.replace(/\D/g, '');
+});
+
+// 举报表单提交
 reportForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const reasonInput = document.getElementById("report-reason");
-    const phoneInput = document.getElementById("report-phone");
-    const qqInput = document.getElementById("report-qq");
     const tips = document.getElementById("report-tips");
 
     const phoneRegex = /^\d{11}$/;
@@ -117,7 +138,6 @@ reportForm.addEventListener("submit", async (e) => {
 
     let isValid = true;
 
-    // 1. 理由非空检查
     if (!reasonInput.value.trim()) {
         reasonInput.classList.add("input-error");
         isValid = false;
@@ -125,7 +145,6 @@ reportForm.addEventListener("submit", async (e) => {
         reasonInput.classList.remove("input-error");
     }
 
-    // 2. 手机号检查：必须是11位纯数字
     if (!phoneRegex.test(phoneInput.value.trim())) {
         phoneInput.classList.add("input-error");
         isValid = false;
@@ -133,7 +152,6 @@ reportForm.addEventListener("submit", async (e) => {
         phoneInput.classList.remove("input-error");
     }
 
-    // 3. QQ号检查：必须是纯数字
     if (!qqRegex.test(qqInput.value.trim())) {
         qqInput.classList.add("input-error");
         isValid = false;
@@ -143,7 +161,7 @@ reportForm.addEventListener("submit", async (e) => {
 
     if (!isValid) {
         tips.style.color = "#ff6b6b";
-        tips.textContent = "格式有误或未填完整：手机号必须为11位纯数字，QQ号必须为纯数字（红框已标出）！";
+        tips.textContent = "请检查：手机号必须为11位纯数字，QQ号必须为纯数字，且理由不能为空！";
         return;
     }
 
@@ -164,6 +182,7 @@ reportForm.addEventListener("submit", async (e) => {
             reasonInput.value = "";
             phoneInput.value = "";
             qqInput.value = "";
+            reasonCount.textContent = "0";
             setTimeout(() => {
                 reportForm.style.display = "none";
                 tips.textContent = "";
