@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!response.ok) throw new Error("Failed to load configuration");
         globalConfig = await response.json();
 
-        // 需求 1：动态设置浏览器标签页标题
+        // 动态设置浏览器标签页标题
         const siteName = globalConfig.profile.name || "sisiyyiyi";
         document.title = `${siteName} | Official Link Hub`;
 
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// 需求 4：更多功能页面交互逻辑
+// 更多功能页面交互逻辑
 const moreModal = document.getElementById("more-features-modal");
 document.getElementById("open-features-btn").addEventListener("click", () => {
     moreModal.style.display = "flex";
@@ -104,7 +104,7 @@ toggleReportBtn.addEventListener("click", () => {
     }
 });
 
-// 举报表单提交与必填项验证、变色提醒
+// 举报表单提交与正则判定规则（手机11位纯数字，QQ纯数字）
 reportForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const reasonInput = document.getElementById("report-reason");
@@ -112,19 +112,38 @@ reportForm.addEventListener("submit", async (e) => {
     const qqInput = document.getElementById("report-qq");
     const tips = document.getElementById("report-tips");
 
+    const phoneRegex = /^\d{11}$/;
+    const qqRegex = /^\d+$/;
+
     let isValid = true;
-    [reasonInput, phoneInput, qqInput].forEach(input => {
-        if (!input.value.trim()) {
-            input.classList.add("input-error");
-            isValid = false;
-        } else {
-            input.classList.remove("input-error");
-        }
-    });
+
+    // 1. 理由非空检查
+    if (!reasonInput.value.trim()) {
+        reasonInput.classList.add("input-error");
+        isValid = false;
+    } else {
+        reasonInput.classList.remove("input-error");
+    }
+
+    // 2. 手机号检查：必须是11位纯数字
+    if (!phoneRegex.test(phoneInput.value.trim())) {
+        phoneInput.classList.add("input-error");
+        isValid = false;
+    } else {
+        phoneInput.classList.remove("input-error");
+    }
+
+    // 3. QQ号检查：必须是纯数字
+    if (!qqRegex.test(qqInput.value.trim())) {
+        qqInput.classList.add("input-error");
+        isValid = false;
+    } else {
+        qqInput.classList.remove("input-error");
+    }
 
     if (!isValid) {
         tips.style.color = "#ff6b6b";
-        tips.textContent = "请完整填写所有必填项（红框标记处）才能提交！";
+        tips.textContent = "格式有误或未填完整：手机号必须为11位纯数字，QQ号必须为纯数字（红框已标出）！";
         return;
     }
 
